@@ -22,6 +22,12 @@ app.use(cors({
 }))
 
 app.use('/api/contact', rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false }))
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Kesari Associates Backend is running'
+  })
+})
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'kesari-associates-api' }))
 app.use('/api/contact', contactRoutes)
 app.use('/api/auth', authRoutes)
