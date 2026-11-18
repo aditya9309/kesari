@@ -21,6 +21,19 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
 }))
 
+import { connectDatabase } from './config/db.js'
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDatabase()
+    next()
+  } catch (error) {
+    console.error('Database connection failed:', error.message)
+    res.status(503).json({
+      message: 'Database temporarily unavailable'
+    })
+  }
+})
 app.use('/api/contact', rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false }))
 app.get('/', (req, res) => {
   res.json({
